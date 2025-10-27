@@ -3,9 +3,8 @@ import {
     LayoutDashboard,
     Users,
     Building2,
+    Calendar,
     CreditCard,
-    MessageSquare,
-    BarChart3,
     Bell,
     Settings,
     Image
@@ -31,19 +30,14 @@ const Sidebar = ({ isOpen, toggleSidebar }) => {
             label: 'Properties'
         },
         {
+            path: '/bookings',
+            icon: Calendar,
+            label: 'Bookings'
+        },
+        {
             path: '/payments',
             icon: CreditCard,
             label: 'Payments'
-        },
-        {
-            path: '/feedback',
-            icon: MessageSquare,
-            label: 'Feedback'
-        },
-        {
-            path: '/analytics',
-            icon: BarChart3,
-            label: 'Analytics'
         },
         {
             path: '/notifications',

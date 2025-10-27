@@ -187,14 +187,14 @@ body {
 }
 
 /* Override Bootstrap table defaults */
-.table > :not(caption) > * > * {
+.table> :not(caption)>*>* {
   background-color: transparent;
 }
 
-.table-striped > tbody > tr:nth-of-type(odd) > * {
+.table-striped>tbody>tr:nth-of-type(odd)>* {
   background-color: rgba(15, 23, 42, 0.3);
 }
 
-.table-striped > tbody > tr:nth-of-type(even) > * {
+.table-striped>tbody>tr:nth-of-type(even)>* {
   background-color: rgba(15, 23, 42, 0.5);
 }

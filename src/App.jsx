@@ -3,9 +3,8 @@ import MainLayout from './components/Layout/MainLayout'
 import Dashboard from './pages/Dashboard'
 import UserManagement from './pages/UserManagement'
 import Properties from './pages/Properties'
+import Bookings from './pages/Bookings'
 import Payments from './pages/Payments'
-import Feedback from './pages/Feedback'
-import Analytics from './pages/Analytics'
 import Notifications from './pages/Notifications'
 import BannerManagement from './pages/BannerManagement'
 import Settings from './pages/Settings'
@@ -35,9 +34,8 @@ function App() {
         <Route path="dashboard" element={<Dashboard />} />
         <Route path="users" element={<UserManagement />} />
         <Route path="properties" element={<Properties />} />
+        <Route path="bookings" element={<Bookings />} />
         <Route path="payments" element={<Payments />} />
-        <Route path="feedback" element={<Feedback />} />
-        <Route path="analytics" element={<Analytics />} />
         <Route path="notifications" element={<Notifications />} />
         <Route path="banners" element={<BannerManagement />} />
         <Route path="settings" element={<Settings />} />
