@@ -9,7 +9,7 @@ const Header = ({ toggleSidebar }) => {
                 <button className="menu-toggle" onClick={toggleSidebar}>
                     <Menu size={24} />
                 </button>
-                
+
                 <div className="mobile-logo-container">
                     <img src={logo} alt="HousingHub Logo" className="mobile-logo-image" />
                     <span className="mobile-logo-text">HousingHub</span>

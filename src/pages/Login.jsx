@@ -1,26 +1,64 @@
 import { useState } from 'react'
-import { Container, Row, Col, Card, Form, Button, Alert } from 'react-bootstrap'
+import { useNavigate } from 'react-router-dom'
+import { Container, Row, Col, Card, Form, Button, Alert, Spinner } from 'react-bootstrap'
 import { Mail, Lock, Eye, EyeOff, LogIn } from 'lucide-react'
+import { collection, query, where, getDocs } from 'firebase/firestore'
+import { db } from '../config/firebase'
+import { useAuth } from '../context/AuthContext'
 import logo from '../assets/Logo.png'
 import './Login.css'
 
 const Login = () => {
+    const navigate = useNavigate()
+    const { login } = useAuth()
     const [showPassword, setShowPassword] = useState(false)
     const [credentials, setCredentials] = useState({
         email: '',
         password: ''
     })
     const [error, setError] = useState('')
+    const [loading, setLoading] = useState(false)
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault()
-        // Implement Firebase authentication here
-        console.log('Login attempt:', credentials)
-        // Temporary validation
-        if (credentials.email && credentials.password) {
-            window.location.href = '/dashboard'
-        } else {
-            setError('Please enter valid credentials')
+        setError('')
+        setLoading(true)
+
+        try {
+            // Query the Admin collection for matching credentials
+            const adminRef = collection(db, 'Admin')
+            const q = query(
+                adminRef,
+                where('email', '==', credentials.email),
+                where('password', '==', credentials.password)
+            )
+
+            const querySnapshot = await getDocs(q)
+
+            if (!querySnapshot.empty) {
+                // Admin credentials match
+                const adminDoc = querySnapshot.docs[0]
+                const adminData = adminDoc.data()
+
+                // Store admin session in localStorage
+                localStorage.setItem('isAuthenticated', 'true')
+                localStorage.setItem('adminEmail', adminData.email)
+                localStorage.setItem('adminId', adminDoc.id)
+
+                // Update auth context
+                login()
+
+                // Navigate to dashboard
+                navigate('/dashboard')
+            } else {
+                // No matching credentials
+                setError('Invalid email or password. Please try again.')
+            }
+        } catch (error) {
+            console.error('Login error:', error)
+            setError('An error occurred during login. Please try again.')
+        } finally {
+            setLoading(false)
         }
     }
 
@@ -66,6 +104,7 @@ const Login = () => {
                                                     onChange={(e) => setCredentials({ ...credentials, email: e.target.value })}
                                                     required
                                                     className="input-custom"
+                                                    disabled={loading}
                                                 />
                                             </div>
                                         </Form.Group>
@@ -83,11 +122,13 @@ const Login = () => {
                                                     onChange={(e) => setCredentials({ ...credentials, password: e.target.value })}
                                                     required
                                                     className="input-custom"
+                                                    disabled={loading}
                                                 />
                                                 <button
                                                     type="button"
                                                     className="password-toggle"
                                                     onClick={() => setShowPassword(!showPassword)}
+                                                    disabled={loading}
                                                 >
                                                     {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
                                                 </button>
@@ -99,12 +140,29 @@ const Login = () => {
                                                 type="checkbox"
                                                 label="Remember me"
                                                 className="custom-checkbox"
+                                                disabled={loading}
                                             />
                                         </Form.Group>
 
-                                        <Button type="submit" className="btn-login w-100 mb-3">
-                                            <LogIn size={18} />
-                                            Sign In to Dashboard
+                                        <Button type="submit" className="btn-login w-100 mb-3" disabled={loading}>
+                                            {loading ? (
+                                                <>
+                                                    <Spinner
+                                                        as="span"
+                                                        animation="border"
+                                                        size="sm"
+                                                        role="status"
+                                                        aria-hidden="true"
+                                                        className="me-2"
+                                                    />
+                                                    Signing in...
+                                                </>
+                                            ) : (
+                                                <>
+                                                    <LogIn size={18} />
+                                                    Sign In to Dashboard
+                                                </>
+                                            )}
                                         </Button>
                                     </Form>
                                 </Card.Body>

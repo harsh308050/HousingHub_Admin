@@ -1,18 +1,30 @@
-import { NavLink } from 'react-router-dom'
+import { NavLink, useNavigate } from 'react-router-dom'
 import {
     LayoutDashboard,
     Users,
     Building2,
     Calendar,
     CreditCard,
-    Bell,
     Settings,
-    Image
+    Image,
+    LogOut
 } from 'lucide-react'
+import { useAuth } from '../../context/AuthContext'
 import logo from '../../assets/Logo.png'
 import './Sidebar.css'
 
 const Sidebar = ({ isOpen, toggleSidebar }) => {
+    const navigate = useNavigate()
+    const { logout } = useAuth()
+
+    const handleLogout = () => {
+        // Clear authentication using context
+        logout()
+
+        // Redirect to login page
+        navigate('/login')
+    }
+
     const menuItems = [
         {
             path: '/dashboard',
@@ -38,11 +50,6 @@ const Sidebar = ({ isOpen, toggleSidebar }) => {
             path: '/payments',
             icon: CreditCard,
             label: 'Payments'
-        },
-        {
-            path: '/notifications',
-            icon: Bell,
-            label: 'Notifications'
         },
         {
             path: '/banners',
@@ -101,10 +108,40 @@ const Sidebar = ({ isOpen, toggleSidebar }) => {
                     <div className="admin-info glass-card">
                         <div className="admin-avatar">👤</div>
                         <div className="admin-details">
-                            <p className="admin-name">Admin User</p>
+                            <p className="admin-name">{localStorage.getItem('adminEmail') || 'Admin User'}</p>
                             <p className="admin-role">Super Admin</p>
                         </div>
                     </div>
+                    <button
+                        className="logout-btn"
+                        onClick={handleLogout}
+                        style={{
+                            width: '100%',
+                            marginTop: '1rem',
+                            padding: '0.75rem',
+                            background: 'rgba(239, 68, 68, 0.1)',
+                            border: '1px solid rgba(239, 68, 68, 0.3)',
+                            borderRadius: '8px',
+                            color: '#ef4444',
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            gap: '0.5rem',
+                            cursor: 'pointer',
+                            transition: 'all 0.3s ease'
+                        }}
+                        onMouseEnter={(e) => {
+                            e.target.style.background = 'rgba(239, 68, 68, 0.2)'
+                            e.target.style.borderColor = 'rgba(239, 68, 68, 0.5)'
+                        }}
+                        onMouseLeave={(e) => {
+                            e.target.style.background = 'rgba(239, 68, 68, 0.1)'
+                            e.target.style.borderColor = 'rgba(239, 68, 68, 0.3)'
+                        }}
+                    >
+                        <LogOut size={18} />
+                        <span>Logout</span>
+                    </button>
                 </div>
             </div>
         </>
