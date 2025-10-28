@@ -1,0 +1,376 @@
+/* Settings Page Styles */
+.settings-container {
+    padding-top: 0;
+    padding-bottom: 2rem;
+}
+
+/* Enhanced Glass Cards */
+.settings-card {
+    background: rgba(30, 41, 59, 0.75);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(148, 163, 184, 0.2);
+    border-radius: 16px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+    transition: all 0.3s ease;
+    overflow: hidden;
+}
+
+.settings-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 12px 32px rgba(37, 99, 235, 0.15);
+    border-color: rgba(37, 99, 235, 0.3);
+}
+
+.settings-card .card-header {
+    background: linear-gradient(135deg, rgba(37, 99, 235, 0.15) 0%, rgba(14, 165, 233, 0.1) 100%);
+    border-bottom: 1px solid rgba(37, 99, 235, 0.2);
+    padding: 1.25rem 1.5rem;
+}
+
+.settings-card .card-body {
+    padding: 1.75rem 1.5rem;
+}
+
+/* Section Headers */
+.settings-section-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 38px;
+    height: 38px;
+    border-radius: 10px;
+    background: linear-gradient(135deg, rgba(37, 99, 235, 0.2) 0%, rgba(14, 165, 233, 0.15) 100%);
+    border: 1px solid rgba(37, 99, 235, 0.3);
+    margin-right: 0.75rem;
+}
+
+.settings-section-title {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: #f1f5f9;
+    margin: 0;
+}
+
+/* Form Inputs */
+.settings-form-group {
+    margin-bottom: 1.5rem;
+}
+
+.settings-form-label {
+    display: flex;
+    align-items: center;
+    font-weight: 500;
+    color: #cbd5e1;
+    margin-bottom: 0.65rem;
+    font-size: 0.95rem;
+}
+
+.settings-form-label svg {
+    margin-right: 0.5rem;
+    color: #60a5fa;
+}
+
+.settings-form-control {
+    background: rgba(15, 23, 42, 0.6) !important;
+    border: 1.5px solid rgba(148, 163, 184, 0.25) !important;
+    color: #e2e8f0 !important;
+    padding: 0.7rem 1rem;
+    border-radius: 10px;
+    font-size: 0.95rem;
+    transition: all 0.3s ease;
+}
+
+.settings-form-control:focus {
+    background: rgba(15, 23, 42, 0.8) !important;
+    border-color: #3b82f6 !important;
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.15) !important;
+    color: #f1f5f9 !important;
+}
+
+.settings-form-control:disabled {
+    background: rgba(30, 41, 59, 0.5) !important;
+    color: #64748b !important;
+    cursor: not-allowed;
+}
+
+/* Password Toggle Button */
+.password-toggle-btn {
+    position: absolute;
+    right: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    color: #94a3b8;
+    cursor: pointer;
+    padding: 0.5rem;
+    border-radius: 6px;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.password-toggle-btn:hover {
+    color: #3b82f6;
+    background: rgba(59, 130, 246, 0.1);
+}
+
+/* Action Buttons */
+.settings-btn-group {
+    display: flex;
+    gap: 0.75rem;
+    flex-wrap: wrap;
+    margin-top: 1.5rem;
+}
+
+.settings-btn-primary {
+    background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
+    border: none;
+    color: white;
+    padding: 0.7rem 1.5rem;
+    border-radius: 10px;
+    font-weight: 500;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
+}
+
+.settings-btn-primary:hover:not(:disabled) {
+    background: linear-gradient(135deg, #1d4ed8 0%, #1e40af 100%);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(37, 99, 235, 0.4);
+}
+
+.settings-btn-primary:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+.settings-btn-secondary {
+    background: rgba(234, 179, 8, 0.15);
+    border: 1.5px solid rgba(234, 179, 8, 0.4);
+    color: #fbbf24;
+    padding: 0.7rem 1.5rem;
+    border-radius: 10px;
+    font-weight: 500;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    transition: all 0.3s ease;
+}
+
+.settings-btn-secondary:hover {
+    background: rgba(234, 179, 8, 0.25);
+    border-color: #fbbf24;
+    color: #fef08a;
+    transform: translateY(-2px);
+}
+
+/* Maintenance Mode Switch */
+.maintenance-switch {
+    margin-bottom: 1.5rem;
+    padding: 1rem;
+    background: rgba(15, 23, 42, 0.4);
+    border-radius: 12px;
+    border: 1px solid rgba(148, 163, 184, 0.15);
+}
+
+.maintenance-switch .form-check {
+    padding-left: 3rem;
+}
+
+.maintenance-switch .form-check-input {
+    width: 3.5rem;
+    height: 1.75rem;
+    margin-top: 0.15rem;
+    background-color: rgba(51, 65, 85, 0.8);
+    border: 2px solid rgba(148, 163, 184, 0.3);
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.maintenance-switch .form-check-input:checked {
+    background-color: #eab308;
+    border-color: #fbbf24;
+    box-shadow: 0 0 12px rgba(234, 179, 8, 0.4);
+}
+
+.maintenance-switch .form-check-input:focus {
+    border-color: #fbbf24;
+    box-shadow: 0 0 0 3px rgba(234, 179, 8, 0.2);
+}
+
+.maintenance-switch .form-check-label {
+    font-size: 1.05rem;
+    font-weight: 600;
+    color: #f1f5f9;
+    cursor: pointer;
+}
+
+.maintenance-switch .form-text {
+    color: #94a3b8;
+    font-size: 0.875rem;
+    margin-top: 0.5rem;
+    display: block;
+}
+
+/* Info Box */
+.settings-info-box {
+    margin-top: 1.25rem;
+    padding: 1.25rem;
+    background: linear-gradient(135deg, rgba(37, 99, 235, 0.12) 0%, rgba(14, 165, 233, 0.08) 100%);
+    border-radius: 12px;
+    border: 1px solid rgba(37, 99, 235, 0.25);
+}
+
+.settings-info-label {
+    color: #94a3b8;
+    font-size: 0.8rem;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 0.5rem;
+}
+
+.settings-info-value {
+    color: #f1f5f9;
+    font-weight: 600;
+    font-size: 1rem;
+    margin-bottom: 0.25rem;
+}
+
+.settings-info-timestamp {
+    color: #64748b;
+    font-size: 0.85rem;
+}
+
+/* Warning Alert */
+.settings-warning-alert {
+    margin-top: 1.25rem;
+    background: linear-gradient(135deg, rgba(234, 179, 8, 0.15) 0%, rgba(234, 179, 8, 0.08) 100%);
+    border: 1px solid rgba(234, 179, 8, 0.35);
+    color: #fbbf24;
+    padding: 1rem 1.25rem;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    font-weight: 500;
+    animation: pulse 2s ease-in-out infinite;
+}
+
+@keyframes pulse {
+    0%, 100% {
+        opacity: 1;
+    }
+    50% {
+        opacity: 0.85;
+    }
+}
+
+/* Modal Styles */
+.settings-modal .modal-content {
+    background: rgba(15, 23, 42, 0.98);
+    border: 1px solid rgba(148, 163, 184, 0.25);
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4);
+    backdrop-filter: blur(20px);
+}
+
+.settings-modal .modal-header {
+    background: linear-gradient(135deg, rgba(37, 99, 235, 0.15) 0%, rgba(14, 165, 233, 0.1) 100%);
+    border-bottom: 1px solid rgba(148, 163, 184, 0.25);
+    padding: 1.25rem 1.5rem;
+}
+
+.settings-modal .modal-title {
+    color: #f1f5f9;
+    font-weight: 600;
+    font-size: 1.25rem;
+}
+
+.settings-modal .modal-body {
+    background: rgba(15, 23, 42, 0.98);
+    padding: 1.75rem 1.5rem;
+}
+
+.settings-modal .btn-close {
+    filter: brightness(0) invert(1);
+    opacity: 0.7;
+}
+
+.settings-modal .btn-close:hover {
+    opacity: 1;
+}
+
+/* Responsive Design */
+@media (max-width: 992px) {
+    .settings-card .card-body {
+        padding: 1.5rem 1.25rem;
+    }
+
+    .settings-btn-group {
+        flex-direction: column;
+    }
+
+    .settings-btn-primary,
+    .settings-btn-secondary {
+        width: 100%;
+        justify-content: center;
+    }
+}
+
+@media (max-width: 768px) {
+    .settings-container {
+        padding-top: 70px; /* Account for fixed mobile header */
+    }
+
+    .settings-card {
+        margin-bottom: 1rem;
+    }
+
+    .settings-card .card-header {
+        padding: 1rem 1.25rem;
+    }
+
+    .settings-card .card-body {
+        padding: 1.25rem 1rem;
+    }
+
+    .settings-section-icon {
+        width: 32px;
+        height: 32px;
+    }
+
+    .settings-section-title {
+        font-size: 1.1rem;
+    }
+
+    .maintenance-switch .form-check-input {
+        width: 3rem;
+        height: 1.5rem;
+    }
+
+    .maintenance-switch .form-check-label {
+        font-size: 1rem;
+    }
+}
+
+@media (max-width: 576px) {
+    .settings-form-control {
+        font-size: 16px; /* Prevent zoom on mobile */
+    }
+
+    .settings-info-box {
+        padding: 1rem;
+    }
+
+    .settings-modal .modal-content {
+        margin: 0.5rem;
+    }
+}

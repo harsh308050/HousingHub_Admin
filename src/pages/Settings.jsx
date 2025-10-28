@@ -3,6 +3,7 @@ import { Container, Row, Col, Card, Form, Button, Alert, Spinner, Modal } from '
 import { Save, User, Lock, Mail, AlertTriangle, Eye, EyeOff } from 'lucide-react'
 import { doc, getDoc, updateDoc, setDoc, serverTimestamp } from 'firebase/firestore'
 import { db } from '../config/firebase'
+import './Settings.css'
 
 const Settings = () => {
     const [loading, setLoading] = useState(true)
@@ -173,7 +174,7 @@ const Settings = () => {
     }
 
     return (
-        <Container fluid>
+        <Container fluid className="settings-container">
             <div className="page-header fade-in">
                 <div>
                     <h2 className="page-title">Settings</h2>
@@ -190,64 +191,59 @@ const Settings = () => {
             <Row className="g-4">
                 {/* Profile Settings */}
                 <Col lg={6}>
-                    <Card className="glass-card fade-in">
-                        <Card.Header className="chart-header">
-                            <div className="d-flex align-items-center gap-2">
-                                <User size={20} style={{ color: 'var(--primary-blue)' }} />
-                                <h5 className="chart-title mb-0">Admin Profile</h5>
+                    <Card className="settings-card fade-in">
+                        <Card.Header>
+                            <div className="d-flex align-items-center">
+                                <div className="settings-section-icon">
+                                    <User size={20} style={{ color: '#60a5fa' }} />
+                                </div>
+                                <h5 className="settings-section-title">Admin Profile</h5>
                             </div>
                         </Card.Header>
                         <Card.Body>
                             <Form onSubmit={handleUpdateEmail}>
-                                <Form.Group className="mb-3">
-                                    <Form.Label>
-                                        <Mail size={16} className="me-2" />
+                                <Form.Group className="settings-form-group">
+                                    <Form.Label className="settings-form-label">
+                                        <Mail size={16} />
                                         Email Address
                                     </Form.Label>
                                     <Form.Control
                                         type="email"
+                                        className="settings-form-control"
                                         value={adminData.email}
                                         onChange={(e) => setAdminData({ ...adminData, email: e.target.value })}
                                         required
                                     />
                                 </Form.Group>
 
-                                <Form.Group className="mb-4">
-                                    <Form.Label>
-                                        <Lock size={16} className="me-2" />
+                                <Form.Group className="settings-form-group">
+                                    <Form.Label className="settings-form-label">
+                                        <Lock size={16} />
                                         Current Password
                                     </Form.Label>
                                     <div className="position-relative">
                                         <Form.Control
                                             type={showPassword ? "text" : "password"}
+                                            className="settings-form-control"
                                             value={adminData.password}
                                             disabled
-                                            style={{ paddingRight: '40px' }}
+                                            style={{ paddingRight: '45px' }}
                                         />
                                         <button
                                             type="button"
                                             onClick={() => setShowPassword(!showPassword)}
-                                            style={{
-                                                position: 'absolute',
-                                                right: '10px',
-                                                top: '50%',
-                                                transform: 'translateY(-50%)',
-                                                background: 'none',
-                                                border: 'none',
-                                                color: '#94a3b8',
-                                                cursor: 'pointer'
-                                            }}
+                                            className="password-toggle-btn"
                                         >
                                             {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
                                         </button>
                                     </div>
                                 </Form.Group>
 
-                                <div className="d-flex gap-2">
-                                    <Button type="submit" className="btn-primary" disabled={saving}>
+                                <div className="settings-btn-group">
+                                    <Button type="submit" className="settings-btn-primary" disabled={saving}>
                                         {saving ? (
                                             <>
-                                                <Spinner size="sm" className="me-2" />
+                                                <Spinner size="sm" />
                                                 Saving...
                                             </>
                                         ) : (
@@ -258,7 +254,7 @@ const Settings = () => {
                                         )}
                                     </Button>
                                     <Button
-                                        variant="outline-warning"
+                                        className="settings-btn-secondary"
                                         onClick={() => setShowChangePassword(true)}
                                     >
                                         <Lock size={18} />
@@ -272,49 +268,40 @@ const Settings = () => {
 
                 {/* Maintenance Mode */}
                 <Col lg={6}>
-                    <Card className="glass-card fade-in">
-                        <Card.Header className="chart-header">
-                            <div className="d-flex align-items-center gap-2">
-                                <AlertTriangle size={20} style={{ color: 'var(--warning-color)' }} />
-                                <h5 className="chart-title mb-0">Maintenance Mode</h5>
+                    <Card className="settings-card fade-in">
+                        <Card.Header>
+                            <div className="d-flex align-items-center">
+                                <div className="settings-section-icon">
+                                    <AlertTriangle size={20} style={{ color: '#fbbf24' }} />
+                                </div>
+                                <h5 className="settings-section-title">Maintenance Mode</h5>
                             </div>
                         </Card.Header>
                         <Card.Body>
-                            <Form.Group className="mb-3">
+                            <div className="maintenance-switch">
                                 <Form.Check
                                     type="switch"
                                     id="maintenance-mode"
-                                    label={
-                                        <span style={{ fontSize: '1.1rem', fontWeight: '500', color: '#e2e8f0' }}>
-                                            {maintenanceData.UnderMaintenance ? 'Maintenance Mode: ON' : 'Maintenance Mode: OFF'}
-                                        </span>
-                                    }
+                                    label={maintenanceData.UnderMaintenance ? 'Maintenance Mode: ON' : 'Maintenance Mode: OFF'}
                                     checked={maintenanceData.UnderMaintenance}
                                     onChange={(e) => handleMaintenanceToggle(e.target.checked)}
                                     disabled={saving}
-                                    style={{ fontSize: '1.2rem' }}
                                 />
-                                <Form.Text style={{ color: '#94a3b8', display: 'block', marginTop: '0.5rem' }}>
+                                <Form.Text>
                                     When enabled, the platform will be unavailable to users
                                 </Form.Text>
-                            </Form.Group>
+                            </div>
 
                             {maintenanceData.updatedBy && (
-                                <div style={{
-                                    marginTop: '1.5rem',
-                                    padding: '1rem',
-                                    background: 'rgba(37, 99, 235, 0.1)',
-                                    borderRadius: '8px',
-                                    border: '1px solid rgba(37, 99, 235, 0.2)'
-                                }}>
-                                    <div style={{ color: '#94a3b8', fontSize: '0.85rem', marginBottom: '0.5rem' }}>
+                                <div className="settings-info-box">
+                                    <div className="settings-info-label">
                                         Last Updated By:
                                     </div>
-                                    <div style={{ color: '#e2e8f0', fontWeight: '500' }}>
+                                    <div className="settings-info-value">
                                         {maintenanceData.updatedBy}
                                     </div>
                                     {maintenanceData.updatedAt && (
-                                        <div style={{ color: '#64748b', fontSize: '0.85rem', marginTop: '0.25rem' }}>
+                                        <div className="settings-info-timestamp">
                                             {new Date(maintenanceData.updatedAt?.seconds * 1000).toLocaleString()}
                                         </div>
                                     )}
@@ -322,14 +309,10 @@ const Settings = () => {
                             )}
 
                             {maintenanceData.UnderMaintenance && (
-                                <Alert variant="warning" className="mt-3" style={{
-                                    background: 'rgba(234, 179, 8, 0.1)',
-                                    border: '1px solid rgba(234, 179, 8, 0.3)',
-                                    color: '#fbbf24'
-                                }}>
-                                    <AlertTriangle size={16} className="me-2" />
+                                <div className="settings-warning-alert">
+                                    <AlertTriangle size={18} />
                                     The platform is currently under maintenance
-                                </Alert>
+                                </div>
                             )}
                         </Card.Body>
                     </Card>
@@ -341,108 +324,77 @@ const Settings = () => {
                 show={showChangePassword}
                 onHide={() => setShowChangePassword(false)}
                 centered
+                className="settings-modal"
             >
-                <Modal.Header style={{
-                    background: 'rgba(15, 23, 42, 0.95)',
-                    borderBottom: '1px solid rgba(148, 163, 184, 0.2)',
-                    color: '#e2e8f0'
-                }}>
-                    <Modal.Title>Change Password</Modal.Title>
-                    <Button
-                        variant="link"
-                        onClick={() => setShowChangePassword(false)}
-                        style={{ color: '#94a3b8' }}
-                    >
-                        ×
-                    </Button>
+                <Modal.Header closeButton>
+                    <Modal.Title>
+                        <Lock size={20} className="me-2" />
+                        Change Password
+                    </Modal.Title>
                 </Modal.Header>
-                <Modal.Body style={{ background: 'rgba(15, 23, 42, 0.95)', color: '#e2e8f0' }}>
+                <Modal.Body>
                     <Form onSubmit={handleChangePassword}>
-                        <Form.Group className="mb-3">
-                            <Form.Label>Current Password</Form.Label>
+                        <Form.Group className="settings-form-group">
+                            <Form.Label className="settings-form-label">Current Password</Form.Label>
                             <div className="position-relative">
                                 <Form.Control
                                     type={showCurrentPassword ? "text" : "password"}
+                                    className="settings-form-control"
                                     value={passwordForm.currentPassword}
                                     onChange={(e) => setPasswordForm({ ...passwordForm, currentPassword: e.target.value })}
                                     required
-                                    style={{ paddingRight: '40px' }}
+                                    style={{ paddingRight: '45px' }}
                                 />
                                 <button
                                     type="button"
                                     onClick={() => setShowCurrentPassword(!showCurrentPassword)}
-                                    style={{
-                                        position: 'absolute',
-                                        right: '10px',
-                                        top: '50%',
-                                        transform: 'translateY(-50%)',
-                                        background: 'none',
-                                        border: 'none',
-                                        color: '#94a3b8',
-                                        cursor: 'pointer'
-                                    }}
+                                    className="password-toggle-btn"
                                 >
                                     {showCurrentPassword ? <EyeOff size={18} /> : <Eye size={18} />}
                                 </button>
                             </div>
                         </Form.Group>
 
-                        <Form.Group className="mb-3">
-                            <Form.Label>New Password</Form.Label>
+                        <Form.Group className="settings-form-group">
+                            <Form.Label className="settings-form-label">New Password</Form.Label>
                             <div className="position-relative">
                                 <Form.Control
                                     type={showNewPassword ? "text" : "password"}
+                                    className="settings-form-control"
                                     value={passwordForm.newPassword}
                                     onChange={(e) => setPasswordForm({ ...passwordForm, newPassword: e.target.value })}
                                     required
                                     minLength={6}
-                                    style={{ paddingRight: '40px' }}
+                                    style={{ paddingRight: '45px' }}
                                 />
                                 <button
                                     type="button"
                                     onClick={() => setShowNewPassword(!showNewPassword)}
-                                    style={{
-                                        position: 'absolute',
-                                        right: '10px',
-                                        top: '50%',
-                                        transform: 'translateY(-50%)',
-                                        background: 'none',
-                                        border: 'none',
-                                        color: '#94a3b8',
-                                        cursor: 'pointer'
-                                    }}
+                                    className="password-toggle-btn"
                                 >
                                     {showNewPassword ? <EyeOff size={18} /> : <Eye size={18} />}
                                 </button>
                             </div>
-                            <Form.Text style={{ color: '#94a3b8' }}>
+                            <Form.Text style={{ color: '#94a3b8', fontSize: '0.875rem' }}>
                                 Must be at least 6 characters long
                             </Form.Text>
                         </Form.Group>
 
-                        <Form.Group className="mb-4">
-                            <Form.Label>Confirm New Password</Form.Label>
+                        <Form.Group className="settings-form-group">
+                            <Form.Label className="settings-form-label">Confirm New Password</Form.Label>
                             <div className="position-relative">
                                 <Form.Control
                                     type={showConfirmPassword ? "text" : "password"}
+                                    className="settings-form-control"
                                     value={passwordForm.confirmPassword}
                                     onChange={(e) => setPasswordForm({ ...passwordForm, confirmPassword: e.target.value })}
                                     required
-                                    style={{ paddingRight: '40px' }}
+                                    style={{ paddingRight: '45px' }}
                                 />
                                 <button
                                     type="button"
                                     onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-                                    style={{
-                                        position: 'absolute',
-                                        right: '10px',
-                                        top: '50%',
-                                        transform: 'translateY(-50%)',
-                                        background: 'none',
-                                        border: 'none',
-                                        color: '#94a3b8',
-                                        cursor: 'pointer'
-                                    }}
+                                    className="password-toggle-btn"
                                 >
                                     {showConfirmPassword ? <EyeOff size={18} /> : <Eye size={18} />}
                                 </button>
@@ -453,13 +405,18 @@ const Settings = () => {
                             <Button
                                 variant="secondary"
                                 onClick={() => setShowChangePassword(false)}
+                                style={{
+                                    background: 'rgba(51, 65, 85, 0.8)',
+                                    border: '1px solid rgba(148, 163, 184, 0.3)',
+                                    color: '#cbd5e1'
+                                }}
                             >
                                 Cancel
                             </Button>
-                            <Button type="submit" className="btn-primary" disabled={saving}>
+                            <Button type="submit" className="settings-btn-primary" disabled={saving}>
                                 {saving ? (
                                     <>
-                                        <Spinner size="sm" className="me-2" />
+                                        <Spinner size="sm" />
                                         Changing...
                                     </>
                                 ) : (

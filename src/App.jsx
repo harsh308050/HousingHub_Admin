@@ -10,6 +10,7 @@ import BannerManagement from './pages/BannerManagement'
 import Settings from './pages/Settings'
 import Login from './pages/Login'
 import './App.css'
+import './styles/responsive.css'
 
 function AppRoutes() {
   const { isAuthenticated, loading } = useAuth()

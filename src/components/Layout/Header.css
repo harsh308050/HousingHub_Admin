@@ -10,13 +10,16 @@
         padding: 0.75rem 1rem;
         justify-content: flex-start;
         align-items: center;
-        position: sticky;
+        position: fixed;
         top: 0;
+        left: 0;
+        right: 0;
         z-index: 100;
-        background: rgba(15, 23, 42, 0.95);
+        background: rgba(15, 23, 42, 0.98);
         backdrop-filter: blur(20px);
-        border-bottom: 1px solid rgba(148, 163, 184, 0.1);
-        margin-bottom: 1rem;
+        -webkit-backdrop-filter: blur(20px);
+        border-bottom: 1px solid rgba(148, 163, 184, 0.15);
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
     }
 
     .mobile-header-content {

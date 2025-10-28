@@ -1,0 +1,685 @@
+/* ==================== GLOBAL RESPONSIVE STYLES ==================== */
+/* This file contains responsive utilities for the entire admin panel */
+
+/* ==================== PAGE LAYOUTS ==================== */
+
+/* Mobile Page Headers */
+@media (max-width: 767.98px) {
+    .page-header {
+        padding: 0.75rem 0;
+        margin-bottom: 1rem;
+    }
+
+    .page-header .d-flex {
+        flex-direction: column;
+        align-items: flex-start !important;
+        gap: 0.75rem;
+    }
+
+    .page-header .btn,
+    .page-header .btn-primary {
+        width: 100%;
+        justify-content: center;
+    }
+}
+
+/* ==================== TABLES RESPONSIVE ==================== */
+
+@media (max-width: 991.98px) {
+    /* Horizontal scroll for tables on tablets and mobile */
+    .table-responsive {
+        display: block;
+        width: 100%;
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+    }
+
+    .table {
+        min-width: 700px; /* Minimum width before scrolling */
+    }
+}
+
+@media (max-width: 767.98px) {
+    .table {
+        font-size: 0.85rem;
+        min-width: 600px;
+    }
+
+    .table thead th {
+        padding: 0.75rem 0.5rem;
+        font-size: 0.75rem;
+        white-space: nowrap;
+    }
+
+    .table tbody td {
+        padding: 0.75rem 0.5rem;
+    }
+
+    /* Status badges in tables */
+    .table .badge {
+        font-size: 0.7rem;
+        padding: 0.25em 0.5em;
+    }
+
+    /* Action buttons in tables */
+    .table .btn-sm {
+        padding: 0.25rem 0.5rem;
+        font-size: 0.75rem;
+    }
+
+    .table .btn-group {
+        display: flex;
+        gap: 0.25rem;
+    }
+}
+
+@media (max-width: 575.98px) {
+    .table {
+        font-size: 0.8rem;
+        min-width: 550px;
+    }
+
+    .table thead th {
+        padding: 0.5rem 0.375rem;
+        font-size: 0.7rem;
+    }
+
+    .table tbody td {
+        padding: 0.5rem 0.375rem;
+    }
+}
+
+/* ==================== FORMS RESPONSIVE ==================== */
+
+@media (max-width: 767.98px) {
+    /* Stack form rows on mobile */
+    .row > .col-md-6,
+    .row > .col-md-4,
+    .row > .col-md-3 {
+        margin-bottom: 0.75rem;
+    }
+
+    /* Full width form controls */
+    .form-control,
+    .form-select,
+    .input-group {
+        width: 100%;
+    }
+
+    /* Form labels */
+    .form-label {
+        font-size: 0.875rem;
+        margin-bottom: 0.375rem;
+        font-weight: 500;
+    }
+
+    /* Input groups */
+    .input-group .btn {
+        padding: 0.5rem 0.75rem;
+    }
+
+    /* Form check (checkboxes/radios) - Enhanced for mobile */
+    .form-check {
+        padding-left: 2rem;
+        margin-bottom: 0.75rem;
+        min-height: 44px; /* Touch-friendly target size */
+        display: flex;
+        align-items: center;
+    }
+
+    .form-check-input {
+        margin-left: -2rem;
+        width: 22px;
+        height: 22px;
+        margin-top: 0;
+        cursor: pointer;
+        border-width: 2px;
+        flex-shrink: 0;
+    }
+
+    /* Radio buttons specific styling */
+    .form-check-input[type="radio"] {
+        width: 24px;
+        height: 24px;
+        border-radius: 50%;
+        background: rgba(15, 23, 42, 0.7);
+        border: 2px solid rgba(148, 163, 184, 0.4);
+        position: relative;
+        transition: all 0.3s ease;
+    }
+
+    .form-check-input[type="radio"]:checked {
+        background: linear-gradient(135deg, #2563eb 0%, #0ea5e9 100%);
+        border-color: #2563eb;
+        box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.2);
+    }
+
+    .form-check-input[type="radio"]:focus {
+        border-color: #3b82f6;
+        box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.25);
+    }
+
+    /* Checkbox specific styling */
+    .form-check-input[type="checkbox"] {
+        width: 22px;
+        height: 22px;
+        border-radius: 6px;
+        background: rgba(15, 23, 42, 0.7);
+        border: 2px solid rgba(148, 163, 184, 0.4);
+        transition: all 0.3s ease;
+    }
+
+    .form-check-input[type="checkbox"]:checked {
+        background: linear-gradient(135deg, #2563eb 0%, #0ea5e9 100%);
+        border-color: #2563eb;
+        box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.2);
+    }
+
+    .form-check-input[type="checkbox"]:focus {
+        border-color: #3b82f6;
+        box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.25);
+    }
+
+    /* Form check labels */
+    .form-check-label {
+        cursor: pointer;
+        user-select: none;
+        color: #e2e8f0;
+        font-size: 1rem;
+        line-height: 1.5;
+        padding-left: 0.5rem;
+    }
+
+    /* Switch styling for mobile */
+    .form-switch .form-check-input {
+        width: 44px;
+        height: 24px;
+        background-color: rgba(51, 65, 85, 0.8);
+        border: 2px solid rgba(148, 163, 184, 0.3);
+        cursor: pointer;
+    }
+
+    .form-switch .form-check-input:checked {
+        background-color: #2563eb;
+        border-color: #2563eb;
+    }
+}
+
+/* ==================== MODALS RESPONSIVE ==================== */
+
+@media (max-width: 767.98px) {
+    .modal-dialog {
+        margin: 0.5rem;
+        max-width: calc(100% - 1rem);
+    }
+
+    .modal-lg,
+    .modal-xl {
+        max-width: calc(100% - 1rem);
+    }
+
+    .modal-content {
+        border-radius: 16px;
+    }
+
+    .modal-header {
+        padding: 1rem;
+        flex-wrap: wrap;
+    }
+
+    .modal-title {
+        font-size: 1.1rem;
+    }
+
+    .modal-body {
+        padding: 1rem;
+        max-height: calc(100vh - 200px);
+        overflow-y: auto;
+    }
+
+    .modal-footer {
+        padding: 1rem;
+        flex-wrap: wrap;
+        gap: 0.5rem;
+    }
+
+    .modal-footer .btn {
+        flex: 1;
+        min-width: 120px;
+    }
+}
+
+@media (max-width: 575.98px) {
+    .modal-dialog {
+        margin: 0.25rem;
+        max-width: calc(100% - 0.5rem);
+    }
+
+    .modal-body {
+        max-height: calc(100vh - 150px);
+    }
+}
+
+/* ==================== CARDS & STATS RESPONSIVE ==================== */
+
+@media (max-width: 767.98px) {
+    /* Stat cards */
+    .glass-card {
+        margin-bottom: 1rem;
+    }
+
+    /* Card spacing */
+    .row.g-4 > * {
+        padding-bottom: 0.75rem;
+    }
+
+    .row.g-3 > * {
+        padding-bottom: 0.5rem;
+    }
+}
+
+/* ==================== BUTTONS RESPONSIVE ==================== */
+
+@media (max-width: 767.98px) {
+    /* Button groups */
+    .btn-group {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.5rem;
+    }
+
+    .btn-group .btn {
+        flex: 1;
+        min-width: 100px;
+    }
+
+    /* Action buttons */
+    .d-flex.gap-2 {
+        flex-wrap: wrap;
+    }
+
+    /* Full width buttons on mobile */
+    .mobile-full-width {
+        width: 100% !important;
+    }
+}
+
+/* ==================== CHARTS RESPONSIVE ==================== */
+
+@media (max-width: 767.98px) {
+    /* Recharts container */
+    .recharts-wrapper {
+        margin: 0 auto;
+    }
+
+    .recharts-surface {
+        overflow: visible !important;
+    }
+
+    /* Legend responsive */
+    .recharts-legend-wrapper {
+        position: relative !important;
+        width: 100% !important;
+        padding-top: 1rem;
+    }
+
+    .recharts-legend-item {
+        margin-right: 0.5rem !important;
+        margin-bottom: 0.5rem;
+        font-size: 0.75rem;
+    }
+
+    /* Tooltip */
+    .recharts-tooltip-wrapper {
+        z-index: 1000;
+    }
+
+    /* Axis labels */
+    .recharts-cartesian-axis-tick {
+        font-size: 0.7rem;
+    }
+
+    .recharts-text {
+        font-size: 0.7rem;
+    }
+}
+
+@media (max-width: 575.98px) {
+    .recharts-legend-item {
+        font-size: 0.7rem;
+    }
+
+    .recharts-cartesian-axis-tick {
+        font-size: 0.65rem;
+    }
+}
+
+/* ==================== FILTERS & SEARCH RESPONSIVE ==================== */
+
+@media (max-width: 767.98px) {
+    /* Filter buttons */
+    .filter-buttons {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.5rem;
+    }
+
+    .filter-buttons .btn {
+        flex: 1;
+        min-width: calc(50% - 0.25rem);
+        font-size: 0.85rem;
+        padding: 0.5rem;
+    }
+
+    /* Search inputs */
+    .search-wrapper {
+        margin-bottom: 1rem;
+    }
+
+    .search-wrapper .input-group {
+        width: 100%;
+    }
+}
+
+@media (max-width: 575.98px) {
+    .filter-buttons .btn {
+        min-width: 100%;
+    }
+}
+
+/* ==================== IMAGES & MEDIA RESPONSIVE ==================== */
+
+@media (max-width: 767.98px) {
+    /* Image previews */
+    img.preview-image {
+        max-width: 100%;
+        height: auto;
+    }
+
+    /* Avatar/Icon sizes */
+    .avatar-lg {
+        width: 60px !important;
+        height: 60px !important;
+    }
+
+    .avatar-md {
+        width: 45px !important;
+        height: 45px !important;
+    }
+
+    .avatar-sm {
+        width: 32px !important;
+        height: 32px !important;
+    }
+}
+
+/* ==================== BADGES & LABELS RESPONSIVE ==================== */
+
+@media (max-width: 767.98px) {
+    .badge {
+        font-size: 0.7rem;
+        padding: 0.3em 0.6em;
+    }
+
+    .badge-lg {
+        font-size: 0.8rem;
+        padding: 0.4em 0.8em;
+    }
+}
+
+/* ==================== ALERTS RESPONSIVE ==================== */
+
+@media (max-width: 767.98px) {
+    .alert {
+        font-size: 0.875rem;
+        padding: 0.75rem 1rem;
+        margin-bottom: 1rem;
+    }
+
+    .alert-heading {
+        font-size: 1rem;
+    }
+}
+
+/* ==================== DROPDOWNS RESPONSIVE ==================== */
+
+@media (max-width: 767.98px) {
+    .dropdown-menu {
+        font-size: 0.875rem;
+        min-width: 200px;
+    }
+
+    .dropdown-item {
+        padding: 0.5rem 1rem;
+    }
+}
+
+/* ==================== PAGINATION RESPONSIVE ==================== */
+
+@media (max-width: 767.98px) {
+    .pagination {
+        font-size: 0.875rem;
+        justify-content: center;
+        flex-wrap: wrap;
+    }
+
+    .page-link {
+        padding: 0.375rem 0.75rem;
+    }
+
+    /* Hide page numbers on very small screens, keep only prev/next */
+    .pagination .page-item:not(.page-item:first-child):not(.page-item:last-child) {
+        display: none;
+    }
+
+    .pagination .page-item.active {
+        display: inline-block;
+    }
+}
+
+/* ==================== TABS RESPONSIVE ==================== */
+
+@media (max-width: 767.98px) {
+    .nav-tabs {
+        flex-wrap: nowrap;
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+    }
+
+    .nav-tabs .nav-link {
+        white-space: nowrap;
+        font-size: 0.875rem;
+        padding: 0.5rem 1rem;
+    }
+}
+
+/* ==================== LISTS RESPONSIVE ==================== */
+
+@media (max-width: 767.98px) {
+    .list-group-item {
+        padding: 0.75rem 1rem;
+        font-size: 0.875rem;
+    }
+}
+
+/* ==================== SPACING UTILITIES ==================== */
+
+@media (max-width: 767.98px) {
+    /* Reduce spacing on mobile */
+    .mb-5 { margin-bottom: 1.5rem !important; }
+    .mb-4 { margin-bottom: 1rem !important; }
+    .mb-3 { margin-bottom: 0.75rem !important; }
+    .mt-5 { margin-top: 1.5rem !important; }
+    .mt-4 { margin-top: 1rem !important; }
+    .mt-3 { margin-top: 0.75rem !important; }
+    .py-5 { padding-top: 1.5rem !important; padding-bottom: 1.5rem !important; }
+    .py-4 { padding-top: 1rem !important; padding-bottom: 1rem !important; }
+    .px-4 { padding-left: 1rem !important; padding-right: 1rem !important; }
+}
+
+/* ==================== TEXT RESPONSIVE ==================== */
+
+@media (max-width: 767.98px) {
+    /* Text truncation */
+    .text-truncate-mobile {
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+
+    /* Multi-line truncation */
+    .text-truncate-2-lines {
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+    }
+
+    /* Smaller text on mobile */
+    .text-muted {
+        font-size: 0.85rem;
+    }
+
+    small, .small {
+        font-size: 0.8rem;
+    }
+}
+
+/* ==================== CONTAINER RESPONSIVE ==================== */
+
+@media (max-width: 767.98px) {
+    .container-fluid {
+        padding-left: 1rem;
+        padding-right: 1rem;
+    }
+}
+
+@media (max-width: 575.98px) {
+    .container-fluid {
+        padding-left: 0.75rem;
+        padding-right: 0.75rem;
+    }
+}
+
+/* ==================== UTILITY CLASSES ==================== */
+
+/* Hide on specific breakpoints */
+.hide-on-mobile {
+    @media (max-width: 767.98px) {
+        display: none !important;
+    }
+}
+
+.hide-on-tablet {
+    @media (min-width: 768px) and (max-width: 991.98px) {
+        display: none !important;
+    }
+}
+
+.hide-on-desktop {
+    @media (min-width: 992px) {
+        display: none !important;
+    }
+}
+
+/* Show only on specific breakpoints */
+.show-on-mobile {
+    display: none !important;
+    @media (max-width: 767.98px) {
+        display: block !important;
+    }
+}
+
+.show-on-tablet {
+    display: none !important;
+    @media (min-width: 768px) and (max-width: 991.98px) {
+        display: block !important;
+    }
+}
+
+/* Flex utilities for mobile */
+@media (max-width: 767.98px) {
+    .flex-column-mobile {
+        flex-direction: column !important;
+    }
+
+    .align-items-start-mobile {
+        align-items: flex-start !important;
+    }
+
+    .justify-content-start-mobile {
+        justify-content: flex-start !important;
+    }
+
+    .w-100-mobile {
+        width: 100% !important;
+    }
+}
+
+/* ==================== ACCESSIBILITY ENHANCEMENTS ==================== */
+
+/* Touch-friendly tap targets */
+@media (max-width: 767.98px) {
+    a, button, .btn, .clickable, .form-check-input {
+        min-height: 44px;
+        min-width: 44px;
+    }
+
+    /* Increase tap area for icons */
+    .btn-sm, .btn-icon {
+        padding: 0.5rem;
+    }
+}
+
+/* ==================== PERFORMANCE OPTIMIZATIONS ==================== */
+
+@media (max-width: 767.98px) {
+    /* Reduce animations on mobile */
+    .glass-card,
+    .stat-card {
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    /* Simplify hover effects */
+    .glass-card:hover,
+    .stat-card:hover {
+        transform: translateY(-1px);
+    }
+
+    /* Reduce blur effects */
+    .glass-card {
+        backdrop-filter: blur(8px);
+        -webkit-backdrop-filter: blur(8px);
+    }
+}
+
+/* ==================== PRINT STYLES ==================== */
+
+@media print {
+    /* Hide navigation and actions */
+    .sidebar,
+    .header,
+    .btn,
+    .modal,
+    .dropdown {
+        display: none !important;
+    }
+
+    /* Full width content */
+    .main-content {
+        margin-left: 0 !important;
+        padding: 0 !important;
+    }
+
+    /* Remove backgrounds */
+    body, .glass-card {
+        background: white !important;
+        color: black !important;
+    }
+
+    /* Show all collapsed content */
+    .collapse {
+        display: block !important;
+        height: auto !important;
+    }
+}
