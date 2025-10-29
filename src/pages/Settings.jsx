@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 import { Container, Row, Col, Card, Form, Button, Alert, Spinner, Modal } from 'react-bootstrap'
-import { Save, User, Lock, Mail, AlertTriangle, Eye, EyeOff } from 'lucide-react'
+import { Save, User, Lock, Mail, AlertTriangle, Eye, EyeOff, Key } from 'lucide-react'
 import { doc, getDoc, updateDoc, setDoc, serverTimestamp } from 'firebase/firestore'
 import { db } from '../config/firebase'
 import './Settings.css'
@@ -16,6 +16,18 @@ const Settings = () => {
         UnderMaintenance: false,
         updatedBy: '',
         updatedAt: null
+    })
+    const [apiKeysData, setApiKeysData] = useState({
+        cloudinaryCloudName: '',
+        cloudinaryUploadPreset: '',
+        countryStateCityAPI: '',
+        razorpayKey: ''
+    })
+    const [showApiKeys, setShowApiKeys] = useState({
+        cloudinaryCloudName: false,
+        cloudinaryUploadPreset: false,
+        countryStateCityAPI: false,
+        razorpayKey: false
     })
     const [showPassword, setShowPassword] = useState(false)
     const [showChangePassword, setShowChangePassword] = useState(false)
@@ -52,6 +64,18 @@ const Settings = () => {
                     UnderMaintenance: data.UnderMaintenance || false,
                     updatedBy: data.updatedBy || '',
                     updatedAt: data.updatedAt || null
+                })
+            }
+
+            // Fetch API Keys from AppControl/ApiKeys
+            const apiKeysDoc = await getDoc(doc(db, 'AppControl', 'ApiKeys'))
+            if (apiKeysDoc.exists()) {
+                const data = apiKeysDoc.data()
+                setApiKeysData({
+                    cloudinaryCloudName: data.cloudinaryCloudName || '',
+                    cloudinaryUploadPreset: data.cloudinaryUploadPreset || '',
+                    countryStateCityAPI: data.countryStateCityAPI || '',
+                    razorpayKey: data.razorpayKey || ''
                 })
             }
         } catch (error) {
@@ -165,6 +189,44 @@ const Settings = () => {
         }
     }
 
+    const handleUpdateApiKeys = async (e) => {
+        e.preventDefault()
+        setSaving(true)
+
+        try {
+            const apiKeysRef = doc(db, 'AppControl', 'ApiKeys')
+            const updateData = {
+                cloudinaryCloudName: apiKeysData.cloudinaryCloudName,
+                cloudinaryUploadPreset: apiKeysData.cloudinaryUploadPreset,
+                countryStateCityAPI: apiKeysData.countryStateCityAPI,
+                razorpayKey: apiKeysData.razorpayKey
+            }
+
+            // Check if document exists
+            const docSnap = await getDoc(apiKeysRef)
+
+            if (docSnap.exists()) {
+                await updateDoc(apiKeysRef, updateData)
+            } else {
+                await setDoc(apiKeysRef, updateData)
+            }
+
+            showAlert('success', 'API Keys updated successfully!')
+        } catch (error) {
+            console.error('Error updating API keys:', error)
+            showAlert('error', 'Failed to update API keys')
+        } finally {
+            setSaving(false)
+        }
+    }
+
+    const toggleApiKeyVisibility = (keyName) => {
+        setShowApiKeys(prev => ({
+            ...prev,
+            [keyName]: !prev[keyName]
+        }))
+    }
+
     if (loading) {
         return (
             <Container fluid className="d-flex justify-content-center align-items-center" style={{ minHeight: '400px' }}>
@@ -270,7 +332,7 @@ const Settings = () => {
                 <Col lg={6}>
                     <Card className="settings-card fade-in">
                         <Card.Header>
-                            <div className="d-flex align-items-center">
+                            <div className="d-flex align-items-center gap-2">
                                 <div className="settings-section-icon">
                                     <AlertTriangle size={20} style={{ color: '#fbbf24' }} />
                                 </div>
@@ -279,14 +341,18 @@ const Settings = () => {
                         </Card.Header>
                         <Card.Body>
                             <div className="maintenance-switch">
-                                <Form.Check
-                                    type="switch"
-                                    id="maintenance-mode"
-                                    label={maintenanceData.UnderMaintenance ? 'Maintenance Mode: ON' : 'Maintenance Mode: OFF'}
-                                    checked={maintenanceData.UnderMaintenance}
-                                    onChange={(e) => handleMaintenanceToggle(e.target.checked)}
-                                    disabled={saving}
-                                />
+                                <div className="d-flex align-items-center gap-2">
+                                    <Form.Check
+                                        type="switch"
+                                        id="maintenance-mode"
+                                        checked={maintenanceData.UnderMaintenance}
+                                        onChange={(e) => handleMaintenanceToggle(e.target.checked)}
+                                        disabled={saving}
+                                    />
+                                    <h5 className="settings-section-title">
+                                        {maintenanceData.UnderMaintenance ? ' Maintenance Mode: ON' : ' Maintenance Mode: OFF'}
+                                    </h5>
+                                </div>
                                 <Form.Text>
                                     When enabled, the platform will be unavailable to users
                                 </Form.Text>
@@ -314,6 +380,162 @@ const Settings = () => {
                                     The platform is currently under maintenance
                                 </div>
                             )}
+                        </Card.Body>
+                    </Card>
+                </Col>
+            </Row>
+
+            {/* API Keys Section */}
+            <Row className="g-4 mt-2">
+                <Col lg={12}>
+                    <Card className="settings-card fade-in">
+                        <Card.Header>
+                            <div className="d-flex align-items-center">
+                                <div className="settings-section-icon">
+                                    <Key size={20} style={{ color: '#10b981' }} />
+                                </div>
+                                <h5 className="settings-section-title">API Keys Management</h5>
+                            </div>
+                        </Card.Header>
+                        <Card.Body>
+                            <Form onSubmit={handleUpdateApiKeys}>
+                                <Row>
+                                    {/* Cloudinary Cloud Name */}
+                                    <Col md={6}>
+                                        <Form.Group className="settings-form-group api-key-field">
+                                            <Form.Label className="settings-form-label">
+                                                <Key size={16} />
+                                                Cloudinary Cloud Name
+                                            </Form.Label>
+                                            <div className="position-relative">
+                                                <Form.Control
+                                                    type={showApiKeys.cloudinaryCloudName ? "text" : "password"}
+                                                    className="settings-form-control"
+                                                    placeholder="Enter Cloudinary Cloud Name"
+                                                    value={apiKeysData.cloudinaryCloudName}
+                                                    onChange={(e) => setApiKeysData({ ...apiKeysData, cloudinaryCloudName: e.target.value })}
+                                                    style={{ paddingRight: '45px' }}
+                                                />
+                                                <button
+                                                    type="button"
+                                                    onClick={() => toggleApiKeyVisibility('cloudinaryCloudName')}
+                                                    className="password-toggle-btn"
+                                                >
+                                                    {showApiKeys.cloudinaryCloudName ? <EyeOff size={18} /> : <Eye size={18} />}
+                                                </button>
+                                            </div>
+                                        </Form.Group>
+                                    </Col>
+
+                                    {/* Cloudinary Upload Preset */}
+                                    <Col md={6}>
+                                        <Form.Group className="settings-form-group api-key-field">
+                                            <Form.Label className="settings-form-label">
+                                                <Key size={16} />
+                                                Cloudinary Upload Preset
+                                            </Form.Label>
+                                            <div className="position-relative">
+                                                <Form.Control
+                                                    type={showApiKeys.cloudinaryUploadPreset ? "text" : "password"}
+                                                    className="settings-form-control"
+                                                    placeholder="Enter Cloudinary Upload Preset"
+                                                    value={apiKeysData.cloudinaryUploadPreset}
+                                                    onChange={(e) => setApiKeysData({ ...apiKeysData, cloudinaryUploadPreset: e.target.value })}
+                                                    style={{ paddingRight: '45px' }}
+                                                />
+                                                <button
+                                                    type="button"
+                                                    onClick={() => toggleApiKeyVisibility('cloudinaryUploadPreset')}
+                                                    className="password-toggle-btn"
+                                                >
+                                                    {showApiKeys.cloudinaryUploadPreset ? <EyeOff size={18} /> : <Eye size={18} />}
+                                                </button>
+                                            </div>
+                                        </Form.Group>
+                                    </Col>
+
+                                    {/* Country State City API */}
+                                    <Col md={6}>
+                                        <Form.Group className="settings-form-group api-key-field">
+                                            <Form.Label className="settings-form-label">
+                                                <Key size={16} />
+                                                Country State City API Key
+                                            </Form.Label>
+                                            <div className="position-relative">
+                                                <Form.Control
+                                                    type={showApiKeys.countryStateCityAPI ? "text" : "password"}
+                                                    className="settings-form-control"
+                                                    placeholder="Enter Country State City API Key"
+                                                    value={apiKeysData.countryStateCityAPI}
+                                                    onChange={(e) => setApiKeysData({ ...apiKeysData, countryStateCityAPI: e.target.value })}
+                                                    style={{ paddingRight: '45px' }}
+                                                />
+                                                <button
+                                                    type="button"
+                                                    onClick={() => toggleApiKeyVisibility('countryStateCityAPI')}
+                                                    className="password-toggle-btn"
+                                                >
+                                                    {showApiKeys.countryStateCityAPI ? <EyeOff size={18} /> : <Eye size={18} />}
+                                                </button>
+                                            </div>
+                                        </Form.Group>
+                                    </Col>
+
+                                    {/* Razorpay Key */}
+                                    <Col md={6}>
+                                        <Form.Group className="settings-form-group api-key-field">
+                                            <Form.Label className="settings-form-label">
+                                                <Key size={16} />
+                                                Razorpay API Key
+                                            </Form.Label>
+                                            <div className="position-relative">
+                                                <Form.Control
+                                                    type={showApiKeys.razorpayKey ? "text" : "password"}
+                                                    className="settings-form-control"
+                                                    placeholder="Enter Razorpay API Key"
+                                                    value={apiKeysData.razorpayKey}
+                                                    onChange={(e) => setApiKeysData({ ...apiKeysData, razorpayKey: e.target.value })}
+                                                    style={{ paddingRight: '45px' }}
+                                                />
+                                                <button
+                                                    type="button"
+                                                    onClick={() => toggleApiKeyVisibility('razorpayKey')}
+                                                    className="password-toggle-btn"
+                                                >
+                                                    {showApiKeys.razorpayKey ? <EyeOff size={18} /> : <Eye size={18} />}
+                                                </button>
+                                            </div>
+                                        </Form.Group>
+                                    </Col>
+                                </Row>
+
+                                <div className="settings-info-box" style={{ marginTop: '1.5rem', marginBottom: '1.5rem' }}>
+                                    <div style={{ color: '#60a5fa', fontSize: '0.875rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                                        <AlertTriangle size={16} />
+                                        <strong>Security Notice:</strong>
+                                    </div>
+                                    <div style={{ color: '#94a3b8', fontSize: '0.875rem', marginTop: '0.5rem' }}>
+                                        These API keys are sensitive. Only update them if you have the correct credentials.
+                                        Click the eye icon to view/hide the keys.
+                                    </div>
+                                </div>
+
+                                <div className="settings-btn-group">
+                                    <Button type="submit" className="settings-btn-primary" disabled={saving}>
+                                        {saving ? (
+                                            <>
+                                                <Spinner size="sm" />
+                                                Saving...
+                                            </>
+                                        ) : (
+                                            <>
+                                                <Save size={18} />
+                                                Update API Keys
+                                            </>
+                                        )}
+                                    </Button>
+                                </div>
+                            </Form>
                         </Card.Body>
                     </Card>
                 </Col>

@@ -379,3 +379,28 @@
         margin: 0.5rem;
     }
 }
+
+/* API Keys Section - Additional Styles */
+.api-key-field {
+    position: relative;
+}
+
+.api-key-field .settings-form-control {
+    font-family: 'Courier New', monospace;
+    letter-spacing: 0.5px;
+}
+
+.api-key-field .settings-form-control[type="password"] {
+    letter-spacing: 3px;
+}
+
+/* Green accent for API Keys section */
+.settings-card .card-header .settings-section-icon:has(svg[color*="10b981"]) {
+    background: linear-gradient(135deg, rgba(16, 185, 129, 0.2) 0%, rgba(5, 150, 105, 0.15) 100%);
+    border: 1px solid rgba(16, 185, 129, 0.3);
+}
+
+.settings-card:has(.api-key-field):hover {
+    border-color: rgba(16, 185, 129, 0.3);
+    box-shadow: 0 12px 32px rgba(16, 185, 129, 0.15);
+}
