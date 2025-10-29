@@ -38,7 +38,8 @@
 
     .content-wrapper {
         padding: 1rem;
-        padding-top: calc(60px + 1rem); /* Fixed header height + padding */
+        padding-top: calc(60px + 1rem);
+        /* Fixed header height + padding */
     }
 }
 

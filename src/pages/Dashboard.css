@@ -372,6 +372,7 @@
 
 /* Touch Optimizations */
 @media (max-width: 767.98px) {
+
     .stat-card,
     .activity-item {
         -webkit-tap-highlight-color: rgba(37, 99, 235, 0.1);

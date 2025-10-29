@@ -264,9 +264,12 @@
 }
 
 @keyframes pulse {
-    0%, 100% {
+
+    0%,
+    100% {
         opacity: 1;
     }
+
     50% {
         opacity: 0.85;
     }
@@ -327,7 +330,8 @@
 
 @media (max-width: 768px) {
     .settings-container {
-        padding-top: 70px; /* Account for fixed mobile header */
+        padding-top: 70px;
+        /* Account for fixed mobile header */
     }
 
     .settings-card {
@@ -363,7 +367,8 @@
 
 @media (max-width: 576px) {
     .settings-form-control {
-        font-size: 16px; /* Prevent zoom on mobile */
+        font-size: 16px;
+        /* Prevent zoom on mobile */
     }
 
     .settings-info-box {

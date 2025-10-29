@@ -214,7 +214,8 @@
 .custom-checkbox {
     color: #cbd5e1;
     font-size: 0.95rem;
-    min-height: 44px; /* Touch-friendly */
+    min-height: 44px;
+    /* Touch-friendly */
     display: flex;
     align-items: center;
 }
@@ -393,7 +394,8 @@
 
     /* Enhanced checkbox for mobile */
     .custom-checkbox {
-        min-height: 44px; /* Touch target */
+        min-height: 44px;
+        /* Touch target */
         font-size: 1rem;
     }
 

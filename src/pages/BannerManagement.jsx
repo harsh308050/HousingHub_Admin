@@ -24,7 +24,6 @@ const BannerManagement = () => {
         description: '',
         link: '',
         isActive: true,
-        order: 1,
         image: null
     })
 
@@ -41,8 +40,12 @@ const BannerManagement = () => {
                 ...doc.data()
             }))
 
-            // Sort by order
-            bannersData.sort((a, b) => (a.order || 0) - (b.order || 0))
+            // Sort by createdAt (newest first)
+            bannersData.sort((a, b) => {
+                const aTime = a.createdAt?.seconds || 0
+                const bTime = b.createdAt?.seconds || 0
+                return bTime - aTime
+            })
             setBanners(bannersData)
         } catch (error) {
             console.error('Error fetching banners:', error)
@@ -126,6 +129,25 @@ const BannerManagement = () => {
         try {
             setUploading(true)
 
+            // If activating this banner, deactivate all other banners first
+            if (formData.isActive) {
+                const bannersSnapshot = await getDocs(collection(db, 'Banners'))
+                const updatePromises = bannersSnapshot.docs.map(async (docSnap) => {
+                    // Skip the current banner if editing
+                    if (editingBanner && docSnap.id === editingBanner.id) {
+                        return
+                    }
+                    // Deactivate all other banners
+                    if (docSnap.data().isActive) {
+                        await updateDoc(doc(db, 'Banners', docSnap.id), {
+                            isActive: false,
+                            updatedAt: serverTimestamp()
+                        })
+                    }
+                })
+                await Promise.all(updatePromises)
+            }
+
             if (editingBanner) {
                 // Update existing banner
                 let imageUrl = editingBanner.imageUrl
@@ -153,7 +175,6 @@ const BannerManagement = () => {
                         description: formData.description,
                         link: formData.link,
                         isActive: formData.isActive,
-                        order: parseInt(formData.order),
                         imageUrl: imageUrl,
                         publicId: publicId,
                         createdAt: editingBanner.createdAt,
@@ -174,7 +195,6 @@ const BannerManagement = () => {
                         description: formData.description,
                         link: formData.link,
                         isActive: formData.isActive,
-                        order: parseInt(formData.order),
                         imageUrl: imageUrl,
                         publicId: publicId,
                         updatedAt: serverTimestamp()
@@ -204,7 +224,6 @@ const BannerManagement = () => {
                     description: formData.description,
                     link: formData.link,
                     isActive: formData.isActive,
-                    order: parseInt(formData.order),
                     imageUrl: uploadResult.url,
                     publicId: uploadResult.publicId,
                     createdAt: serverTimestamp(),
@@ -236,7 +255,6 @@ const BannerManagement = () => {
             description: banner.description,
             link: banner.link || '',
             isActive: banner.isActive,
-            order: banner.order || 1,
             image: null
         })
         setPreviewImage(banner.imageUrl)
@@ -267,11 +285,34 @@ const BannerManagement = () => {
 
     const toggleStatus = async (banner) => {
         try {
+            const willBeActive = !banner.isActive
+
+            // If activating this banner, deactivate all others first
+            if (willBeActive) {
+                const bannersSnapshot = await getDocs(collection(db, 'Banners'))
+                const updatePromises = bannersSnapshot.docs.map(async (docSnap) => {
+                    // Skip the current banner
+                    if (docSnap.id === banner.id) {
+                        return
+                    }
+                    // Deactivate all other banners
+                    if (docSnap.data().isActive) {
+                        await updateDoc(doc(db, 'Banners', docSnap.id), {
+                            isActive: false,
+                            updatedAt: serverTimestamp()
+                        })
+                    }
+                })
+                await Promise.all(updatePromises)
+            }
+
+            // Update the current banner
             const bannerRef = doc(db, 'Banners', banner.id)
             await updateDoc(bannerRef, {
-                isActive: !banner.isActive,
+                isActive: willBeActive,
                 updatedAt: serverTimestamp()
             })
+
             fetchBanners()
         } catch (error) {
             console.error('Error toggling status:', error)
@@ -288,7 +329,6 @@ const BannerManagement = () => {
             description: '',
             link: '',
             isActive: true,
-            order: 1,
             image: null
         })
         setPreviewImage(null)
@@ -338,7 +378,6 @@ const BannerManagement = () => {
                                 background: 'rgba(37, 99, 235, 0.1)',
                                 borderBottom: '1px solid rgba(148, 163, 184, 0.2)'
                             }}>
-                                <th style={{ color: '#e2e8f0', fontWeight: '600', padding: '1rem' }}>Order</th>
                                 <th style={{ color: '#e2e8f0', fontWeight: '600', padding: '1rem' }}>Preview</th>
                                 <th style={{ color: '#e2e8f0', fontWeight: '600', padding: '1rem' }}>Title & Subtitle</th>
                                 <th style={{ color: '#e2e8f0', fontWeight: '600', padding: '1rem' }}>Description</th>
@@ -350,7 +389,7 @@ const BannerManagement = () => {
                         <tbody>
                             {banners.length === 0 ? (
                                 <tr>
-                                    <td colSpan="7" style={{
+                                    <td colSpan="6" style={{
                                         textAlign: 'center',
                                         padding: '3rem',
                                         color: '#94a3b8'
@@ -365,9 +404,6 @@ const BannerManagement = () => {
                                         borderBottom: '1px solid rgba(148, 163, 184, 0.1)',
                                         transition: 'background 0.2s'
                                     }}>
-                                        <td style={{ color: '#e2e8f0', padding: '1rem', verticalAlign: 'middle' }}>
-                                            {banner.order || 1}
-                                        </td>
                                         <td style={{ padding: '0.5rem', verticalAlign: 'middle' }}>
                                             <img
                                                 src={banner.imageUrl}
@@ -561,19 +597,7 @@ const BannerManagement = () => {
                         </Row>
 
                         <Row>
-                            <Col md={6}>
-                                <Form.Group className="mb-3">
-                                    <Form.Label>Order</Form.Label>
-                                    <Form.Control
-                                        type="number"
-                                        min="1"
-                                        value={formData.order}
-                                        onChange={(e) => setFormData({ ...formData, order: e.target.value })}
-                                        required
-                                    />
-                                </Form.Group>
-                            </Col>
-                            <Col md={6}>
+                            <Col md={12}>
                                 <Form.Group className="mb-3">
                                     <Form.Label>Status</Form.Label>
                                     <Form.Check
@@ -583,6 +607,9 @@ const BannerManagement = () => {
                                         onChange={(e) => setFormData({ ...formData, isActive: e.target.checked })}
                                         style={{ marginTop: '0.5rem' }}
                                     />
+                                    <Form.Text style={{ color: '#94a3b8', display: 'block', marginTop: '0.5rem' }}>
+                                        ⚠️ Only one banner can be active at a time. Activating this will deactivate others.
+                                    </Form.Text>
                                 </Form.Group>
                             </Col>
                         </Row>
